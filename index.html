@@ -11,6 +11,8 @@
 
 <body>
 これはテストです
+<button onclick="checkLogin()">CheckLogin</button>
+<button onclick="goToAuthURL()">GoToAuthURL</button>
 <div class="debug"></div>
 
 </body>
@@ -22,6 +24,12 @@
 //var API_BASE_URL = 'https://kadou.i.nijibox.net/api/';
 var API_BASE_URL = 'http://localhost:5000/api/';
 var SELF_URL = location.href;
+
+var authUrl = '';
+
+function goToAuthURL(){
+	window.location.href = authUrl;
+}
 
 function checkLogin(){
 	var url = API_BASE_URL + 'auth';
@@ -54,8 +62,10 @@ function authOnSuccess(response, type){
 		$('.debug').append('<p>データ取得開始</p>');
 		accessNormalApi();
 	}else{
-		$('.debug').append('<p>未ログインなのでリダイレクト</p>');
-		window.location.href = response.data.auth_url;
+		authUrl = response.data.auth_url;
+		$('.debug').append('<p>'+authUrl+'</p>');
+		$('.debug').append('<p>「GoToAuthURL」ボタンを押してちょ</p>');
+		// window.location.href = response.data.auth_url;
 	}
 	return true;
 }
