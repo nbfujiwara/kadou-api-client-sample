@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="robots" content="noindex,nofollow,noarchive" />
+	<meta http-equiv="content-language" content="ja">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>稼働力API連携サンプル</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+これはテストです
+<div class="debug"></div>
+
+</body>
+<script type="text/javascript">
+	$(function() {
+		checkLogin();
+	});
+
+var API_BASE_URL = 'https://kadou.i.nijibox.net/api/';
+var SELF_URL = location.href;
+
+function checkLogin(){
+	var url = API_BASE_URL + 'auth';
+	url += '?callback=' + encodeURIComponent(SELF_URL);
+
+	$.ajax({
+		url: url,
+		type: "GET",
+		dataType: 'json',
+		cache: false,
+		xhrFields : {withCredentials: true},
+		success: authOnSuccess,
+		error: ajaxOnError
+	});
+}
+function ajaxOnError(XMLHttpRequest, textStatus, errorThrown) {
+	console.log(XMLHttpRequest);
+	console.log(textStatus);
+	console.log(errorThrown);
+	alert('エラーが発生してしまいました');
+}
+
+function authOnSuccess(response, type){
+	console.log(response);
+	if(response.code != "200"){
+		return false;
+	}
+	if(response.data.is_login){
+		$('.debug').append('<p>ログイン成功</p>');
+		$('.debug').append('<p>データ取得開始</p>');
+		accessNormalApi();
+	}else{
+		$('.debug').append('<p>未ログインなのでリダイレクト</p>');
+		window.location.href = response.data.auth_url;
+	}
+	return true;
+}
+
+function accessNormalApi(){
+	var url = API_BASE_URL + 'who/departments';
+	$.ajax({
+		url: url,
+		type: "GET",
+		dataType: 'json',
+		cache: false,
+		xhrFields : {withCredentials: true},
+		success: normalApiOnSuccess,
+		error: ajaxOnError
+	});
+
+}
+function normalApiOnSuccess(response, type){
+	console.log(response);
+	if(response.code != "200"){
+		return false;
+	}
+	var list = response.data;
+	for(var i=0; i<list.length; i++){
+		$('.debug').append('<p>'+list[i].department_name+'</p>');
+	}
+
+	return true;
+}
+
+
+
+</script>
+
+</html>
+
+
