@@ -1,0 +1,8 @@
+{
+  "name": "kadou-api-client-sample",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/nbfujiwara/kadou-api-client-sample.git",
+  "author": "yuji.fujiwara <yuji.fujiwara@nijibox.co.jp>",
+  "license": "MIT"
+}
