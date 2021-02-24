@@ -1,0 +1,10 @@
+{
+    "name": "nijimac092/kadou-api-client-sample",
+    "authors": [
+        {
+            "name": "yuji.fujiwara",
+            "email": "yuji.fujiwara@nijibox.co.jp"
+        }
+    ],
+    "require": {}
+}
